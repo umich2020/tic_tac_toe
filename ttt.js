@@ -4,9 +4,17 @@ const gameboard = (function createboard() {
     const placeholder = "z"
     const board = []
     for (let i =0; i< row; i++) {
-         board[i]=[]
+        board[i]=[]
         for (let k=0; k < column; k++) {
             board[i][k] = placeholder
+        }
+    }
+    function reset (array){
+        for (let i =0; i< 3; i++) {
+            array[i]=[]
+            for (let k=0; k < 3; k++) {
+                array[i][k] = "z"
+            }
         }
     }
     function placer (input, row, column) {
@@ -24,7 +32,7 @@ const gameboard = (function createboard() {
             return false
         }
     }
-    return {board, placer, check}
+    return {board, placer, check,reset}
 })()
 
 function display(array) {
@@ -89,7 +97,7 @@ function turn (board) {
         return "o"
     }
 }
-
+const h2 = document.querySelector("#win_display")
 const cells = document.querySelectorAll("cell")
 cells.forEach((cell) => {
     cell.addEventListener("click", () => {
@@ -106,8 +114,20 @@ cells.forEach((cell) => {
             alert("item has been filled")
         }
         if(game.checkWin(gameboard.board).win === true) {
-            alert("the winner is "+game.checkWin(gameboard.board).winner)
+            h2.textContent = ("the winner is "+game.checkWin(gameboard.board).winner)
         }
     })
     
 })
+const reset = document.getElementById("reset")
+reset.addEventListener("click", () => {
+    h2.textContent = ""
+    gameboard.reset(gameboard.board)
+    console.log("reset is")
+
+    console.log(display(gameboard.board))
+    console.log("nor resetting all the cells")
+    cells.forEach((cell)=> {
+        cell.textContent = "null"
+    })
+}) 
